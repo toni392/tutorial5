@@ -21,3 +21,8 @@ class Device(BaseModel):
 
 
 # Your handlers go below this line.
+
+#task 1: get all devices
+@app.get("/devices")
+def get_devices():
+    return list(devices.find({}, {"_id":0}))
