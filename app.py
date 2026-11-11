@@ -42,3 +42,13 @@ def create_device(device: Device):
         raise HTTPException(status_code=409, detail=f"Device '{device.name}' already exists")
     devices.insert_one(device.model_dump())
     return device
+
+#task 4: put a device
+@app.put("/devices/{name}")
+def update_device(name: str, device: Device):
+    if device.name != name:
+        raise HTTPException(status_code=409, detail="Name in body does not match name in URL")
+    result = devices.replace_one({"name": name}, device.model_dump())
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="No device called " + name)
+    return device
